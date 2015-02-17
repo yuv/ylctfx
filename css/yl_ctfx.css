@@ -1,0 +1,55 @@
+/**********************************
+Styling for the contact form
+***********************************/
+
+#yl_ctfx {
+  border: 1px solid #00F;
+  padding: 5px;
+  width: 370px;
+  background-color: #DDD;
+  color: #000;
+  font-size: 1.0em;
+}
+
+#yl_ctfx label {
+  display: inline-block;
+  line-height: 1.8;
+  vertical-align: top;
+  color: #000;
+}
+
+#yl_ctfx p {
+/*  list-style: none; */
+  margin: 0;
+  padding: 5px 10px 7px;
+}
+
+/* #yl_ctfx label { width: 120px; } /* Width of labels */
+/* #yl_ctfx label { margin-left: 123px; } /* Width plus 3 (html space) */
+#yl_ctfx label.error {
+/*  margin-left: 123px; */
+  width: 220px;
+}
+
+#yl_ctfx label.error, label.error {
+  /* remove the next line when you have trouble in IE6 with labels in list */
+  color: red;
+  font-style: italic
+}
+#yl_ctfx div.error { display: none; }
+#yl_ctfx input { border: 1px solid black; }
+#yl_ctfx input.checkbox { border: none }
+#yl_ctfx input:focus { border: 1px dotted black; }
+#yl_ctfx input.error { border: 1px dotted red; }
+#yl_ctfx textarea:focus { border: 1px dotted black; }
+#yl_ctfx textarea.error { border: 1px dotted red; }
+
+#yl_ctfx input.submit {
+/*  margin-left: 123px;*/
+}
+
+#yl_fx_close {
+  float: right;
+  width: 100px;
+  text-align: right;
+}
