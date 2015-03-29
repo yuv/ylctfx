@@ -44,37 +44,6 @@ $return_diag='';
 // recipient
 $t = filter_input (INPUT_POST, 'target', FILTER_SANITIZE_STRING);
 
-// legacy YLPLATFORM
-if (is_numeric($t)){
-  $return_diag.='_numeric target';
-  global $connect;
-  // if we have no connection, reconnect
-  if (!$connection) {$connection=ylconnect();}
-  // database dynamic user - look it up in the database
-  $sql='SELECT CONCAT_WS(" ", ru_fname, ru_lname) AS ru_user, ru_email
-          FROM ru_reguser
-          WHERE ru_nid='.$target;
-  $sql_result = mysql_query($sql,$connection)
-          or ylDie('TM01', 'could not retrieve target email.', $sql);
-  // fetch the requested data
-  $row=mysql_fetch_array($sql_result);
-  // retrieve recipient e-mail
-  $recipient=$row['ru_email'];
-  $recipient_name=$row['ru_user'];
-} else {
-  $rec=$trgt[$t];
-  if (is_array($rec)){
-    $recipient=$rec['rec'];
-    $recipient_name=$rec['name'];
-  } else {
-    $return_diag.='_fallback recipient';
-    $recipient='yuval@levy.ch';
-  }
-  if($recipient_name==''){
-    $recipient_name=$recipient;
-  }
-}
-
 // get session information
 if ($_SERVER['HTTP_X_FORWARDED_FOR']) {
   $ra = $_SERVER['HTTP_X_FORWARDED_FOR'];
