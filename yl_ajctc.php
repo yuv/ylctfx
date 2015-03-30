@@ -65,7 +65,6 @@ $ht=$_SERVER['REMOTE_HOST'];
 
 // time in seconds allowed for user to fill the form
 define(TIMEOUT,600);
-// TODO: validate timeout
 
 // validate captcha
 $t = filter_input (INPUT_POST, 'l', FILTER_SANITIZE_STRING);
@@ -82,6 +81,13 @@ if ($v==$hash){
     // invalid / obsolete hash
     $valid_captcha='NO';
     $return.='_Bad Captcha';
+}
+
+// validate timestamp
+$cutoff=date('YmdHis',(time()-TIMEOUT));
+//$return.='_Time_'.$cutoff.'_'.$h[1].$h[2];
+if($h[1].$h[2]<$cutoff){
+  $return.='_Timeout: Save your entry and reload the page.';
 }
 
 // subjet
