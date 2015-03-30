@@ -46,7 +46,6 @@ foo = foo+'rm id="ylctact" meth'+'od="get" act'+'ion=""> \
               </p> \
               <p> \
                 <input id="csubmit" class="submit" type="submit" value="Submit"/> \
-                <input type="hidden" name="i" value="__HASH__"/> \
                 <input type="hidden" name="l" value="__HASH_CAPTCHA__"/> \
                 <input type="hidden" name="target" value="__TARGET__" /> \
               </p> \
@@ -90,7 +89,6 @@ function contact (t){
   // set up the contact form
   var f = foo.replace('__TARGET__',t);
   f = f.replace('__CAPTCHA__',yl_c);
-  f = f.replace('__HASH__',yl_h);
   f = f.replace('__HASH_CAPTCHA__',yl_hc);
   var u = "the unknown recipient";
   if (typeof(Recipients[t]) != "undefined")

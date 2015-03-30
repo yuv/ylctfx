@@ -58,60 +58,23 @@ $ht=$_SERVER['REMOTE_HOST'];
 
 // time in seconds allowed for user to fill the form
 define(TIMEOUT,600);
-// if we're around the change of the day, there is an exception, so find out
-$a0=time();
-$a1=$a0-TIMEOUT;
-$d0=date('Ymd',$a0);
-$d1=date('Ymd',$a1);
-$t0=date('His',$a0);
-// OLD: $hash=base64_encode($data['en_sysfname'].'_'.hash('sha256',$data['en_sysfname'].$salt.$t1.$t2).'_'.$t2);
-// v.2: $hash=base64_encode($data['en_event'].'.'.$data['en_user'].'.'.$data['en_sequence'].'_'.hash('sha256',$data['en_event'].'.'.$data['en_user'].'.'.$data['en_sequence'].$salt.$t1.$t2).'_'.$t2);
-$t = filter_input (INPUT_POST, 'i', FILTER_SANITIZE_STRING);
-$hash=base64_decode($t);
-$h=explode('_',$hash);
-// check if the hash is OK
-$v0=hash('sha256',$h[0].$salt.$d0.$h[2]);
-$v1=hash('sha256',$h[0].$salt.$d1.$h[2]);
-$d='';
-if($v0==$h[1]){
-    $d=$d0;
-}
-if($v1==$h[1]){
-    $d=$d1;
-}
-if($d==''){
-    // invalid / obsolete hash
-    $valid_hash='NO';
-    $return_diag.='_invalid time token';
-}
-// get y/m/d for now and for hash
-$x0=str_split($d,2);
-$x1=str_split($d0,2);
-// get h/m/s for now and for hash
-$y0=str_split($h[2],2);
-$y1=str_split($t0,2);
-// transform into timestamps
-$z0=mktime($y0[0],$y0[1],$y0[2],$x0[1],$x0[2],$x0[0]);
-$z1=mktime($y0[0],$y1[1],$y1[2],$x1[1],$x1[2],$x1[0]);
-//die('a'.($z1-$z0));
-if(($z1-$z0)>TIMEOUT){
-  $valid_hash='NO';
-  $return_diag.='_time token expired';
-// for now we do not insist on time out
-//  $return.='_Time Out.';
-}else{
-  $valid_hash='YES';
-}
+// TODO: validate timeout
 
 // validate captcha
 $t = filter_input (INPUT_POST, 'l', FILTER_SANITIZE_STRING);
 $c = filter_input (INPUT_POST, 'ccaptcha', FILTER_SANITIZE_NUMBER_INT);
 
-if ($t==base64_encode(hash('sha256',$salt.$c))){
+$hash=base64_decode($t);
+$h=explode('_',$hash);
+
+$v=hash('sha256',$salt.$h[1].$h[2].$c).'_'.$h[1].'_'.$h[2];
+
+if ($v==$hash){
   $valid_captcha="YES";
 } else {
-  $valid_captcha="NO";
-  $return.='_Bad Captcha.';
+    // invalid / obsolete hash
+    $valid_captcha='NO';
+    $return.='_Bad Captcha';
 }
 
 // subjet
