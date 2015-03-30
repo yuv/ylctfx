@@ -43,6 +43,13 @@ $return_diag='';
 
 // recipient
 $t = filter_input (INPUT_POST, 'target', FILTER_SANITIZE_STRING);
+if(array_key_exists($t, $trgt)){
+  $recipient_name = $trgt[$t]['name'];
+  $recipient = $trgt[$t]['rec'];
+}else{
+  $recipient_name = 'emergency_contact_'.$t;
+  $recipient = 'webmaster@example.com';
+}
 
 // get session information
 if ($_SERVER['HTTP_X_FORWARDED_FOR']) {
@@ -104,7 +111,7 @@ if (filter_var($t, FILTER_VALIDATE_EMAIL)) {
 
 // recipient of last resort
 if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
-  $recipient = 'yuval@levy.ch';
+  $recipient = 'webmaster@example.com';
   $return_diag.='_fallback recipient of last resort';
 }
 
