@@ -52,16 +52,13 @@ if(array_key_exists($t, $trgt)){
 }
 
 // get session information
-if ($_SERVER['HTTP_X_FORWARDED_FOR']) {
-  $ra = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-  $ra = $_SERVER['REMOTE_ADDR'];
+$ra = getenv('REMOTE_ADDR');
+if (getenv('HTTP_X_FORWARDED_FOR')) {
+  $ra = $ra.' forwarded for '.getenv('HTTP_X_FORWARDED_FOR');
 }
-$br = $_SERVER['HTTP_USER_AGENT'];
-$ti  = gmdate('Y m d H:i:s', time());
-//              $ht = gethostbyaddr($ra);
-// 08-jul-04 removed gethostbyaddress because of problems with 1% of internet addresses
-$ht=$_SERVER['REMOTE_HOST'];
+$br = getenv('HTTP_USER_AGENT');
+$ti = gmdate('Y m d H:i:s', time());
+$ht = getenv('REMOTE_HOST');
 
 // time in seconds allowed for user to fill the form
 define(TIMEOUT,600);
@@ -95,7 +92,7 @@ $t = filter_input (INPUT_POST, 'csubject', FILTER_SANITIZE_STRING);
 if (strlen($t)>1){
   $subject=$t;
 }else{
-  $subject = 'Web Form Message '.$_SERVER['HTTP_HOST'];
+  $subject = 'Web Form Message '.getenv('HTTP_HOST');
   $return_diag.='_no subject';
 }
 
@@ -129,8 +126,7 @@ $body.='Remote Address: '.$ra.CRLF;
 $body.='User Agent:     '.$br.CRLF;
 $body.='GMT Time:       '.$ti.CRLF;
 $body.='Host:           '.$ht.CRLF;
-$body.='                '.$_SERVER['HTTP_HOST'].CRLF;
-$body.='Time-Valid:     '.$valid_hash.CRLF;
+$body.='                '.getenv('HTTP_HOST').CRLF;
 $body.='Captcha:        '.$valid_captcha.CRLF;
 $body.='-----------------------------------------------------------'.CRLF;
 
