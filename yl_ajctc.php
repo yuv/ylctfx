@@ -119,6 +119,7 @@ if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
 }
 
 // body
+$body='';
 $body.='-Message---------------------------------------------------'.CRLF;
 $body.=$message.CRLF;
 $body.='-Session Variables-----------------------------------------'.CRLF;
@@ -184,6 +185,7 @@ if ($return==''){
 // sleep(5);
 
 $xml = "<p>'.$return.'</p>";
+$xml. = "<p>'.$return_diag.'</p>";
 // header('Content-type: text/html');
 header('Content-type: text/plain');
 //echo $xml;
